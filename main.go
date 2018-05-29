@@ -30,15 +30,16 @@ type lockFile struct {
 }
 
 func parsecl() (n int, c, url, path, ref string) {
-	cmdl := flag.NewFlagSet(os.Args[0], flag.ContinueOnError)
+	cmdl := flag.NewFlagSet(os.Args[0], flag.ExitOnError)
 	cmdl.Usage = func() {
-		fmt.Fprintf(os.Stderr, "\n多线程下载器 by yuansu\n\nUsage: %s [option] URL\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "\n多线程下载器 by yuansu\nUsage: %s [option] URL\n", os.Args[0])
 		cmdl.PrintDefaults()
 	}
 	cmdl.StringVar(&path, "o", "", "文件输出位置")
 	cmdl.IntVar(&n, "n", 1, "同时下载的线程数量[1-50]")
 	cmdl.StringVar(&c, "c", "", "要传递的Cookie")
 	cmdl.StringVar(&ref, "r", "", "引用页")
+
 	cmdl.Parse(os.Args[1:])
 	if n < 1 {
 		n = 1
@@ -48,6 +49,7 @@ func parsecl() (n int, c, url, path, ref string) {
 	}
 
 	if cmdl.NArg() == 0 {
+		fmt.Fprintln(os.Stderr, "没有指定下载网址！")
 		cmdl.Usage()
 		os.Exit(1)
 	} else {
