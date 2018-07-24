@@ -16,3 +16,5 @@ Usage: mdown.exe [option] URL
         引用页
 </pre>
 </blockquote>
+
+这里提供一个编译好的版本 [win_x64下载](https://github.com/yuansushow/mdown/releases)
