@@ -124,8 +124,11 @@ func main() {
 	}
 	<-isend
 	t2 = time.Now().Unix()
-	speed := fileLength / (t2 - t1)
-	fmt.Printf("\n下载完成！平均速度：%s/s\n", fmtSize(speed))
+	fmt.Print("\n下载完成！")
+	if t1 != t2 {
+		speed := fileLength / (t2 - t1)
+		fmt.Printf("平均速度：%s/s\n", fmtSize(speed))
+	}
 }
 
 //分配各线程下载范围
@@ -161,7 +164,7 @@ func downloader(client *http.Client, msg downmsg, f lockFile, reporter chan int)
 		log.Fatal("分线程下载失败")
 	}
 	var n int
-	process := int64(msg.st)
+	process := int64(msg.st) //记录文件写入位置
 
 	for {
 		n, err = resp.Body.Read(buf)
